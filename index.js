@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 const {
   createNewUser,
   getPhotosByQuery,
@@ -21,6 +22,14 @@ app.post("/api/photos/:photoId/tags", addTag);
 app.get("/api/photos/search", getPhotosByQuery);
 app.get("/api/photos/tag/search", searchPhotosByTag);
 app.get("/api/search-history", getSearchHistory);
+
+const distPath = path.join(__dirname, "frontend/dist");
+
+app.use(express.static(distPath));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(distPath, "index.html"));
+});
 
 sequelize
   .authenticate()
