@@ -1,11 +1,10 @@
-
 module.exports = (sequelize, DataTypes) => {
-  const tag = sequelize.define('tag', {
+  const tag = sequelize.define("tag", {
     name: DataTypes.STRING,
     photoId: {
       type: DataTypes.INTEGER,
-      references: { model: 'photo', key: 'id' }
-    }
+      references: { model: "photo", key: "id" },
+    },
   });
 
   tag.associate = (models) => {
@@ -14,4 +13,3 @@ module.exports = (sequelize, DataTypes) => {
 
   return tag;
 };
-

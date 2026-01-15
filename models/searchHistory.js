@@ -1,15 +1,14 @@
-
 module.exports = (sequelize, DataTypes) => {
-  const searchHistory= sequelize.define('searchHistory', {
+  const searchHistory = sequelize.define("searchHistory", {
     query: DataTypes.STRING,
     userId: {
       type: DataTypes.INTEGER,
-      references: { model: 'user', key: 'id' }
+      references: { model: "user", key: "id" },
     },
     timestamp: {
       type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW
-    }
+      defaultValue: DataTypes.NOW,
+    },
   });
 
   searchHistory.associate = (models) => {
@@ -18,4 +17,3 @@ module.exports = (sequelize, DataTypes) => {
 
   return searchHistory;
 };
-

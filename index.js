@@ -1,27 +1,87 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
+const cookieParser = require("cookie-parser");
+const rateLimit = require("express-rate-limit");
+
+/* ------------------ Controllers ------------------ */
+
+const { signup } = require("./controller/signup.controller");
+const { verifyEmail } = require("./controller/verifyEmail.controller");
+const { login } = require("./controller/login.controller");
+const { logout } = require("./controller/logout.controller");
+const { refresh } = require("./controller/refresh.controller");
+const { forgotPassword } = require("./controller/forgotPassword.controller");
+const { resetPassword } = require("./controller/resetPassword.controller");
+const { getPhotosByQuery } = require("./controller/semantic_search.controller");
+const { savePhotoToCollection } = require("./controller/savePhoto.controller");
+const { addTag } = require("./controller/addTag.controller");
 const {
-  createNewUser,
-  getPhotosByQuery,
-  savePhotosToCollection,
-  addTag,
   searchPhotosByTag,
-  getSearchHistory,
-} = require("./controller/controller");
+} = require("./controller/searchSavedPhotos.controller");
+const { getSearchHistory } = require("./controller/searchHistory.controller");
+const { getCsrfToken } = require("./controller/csrf.controller");
+
+/* ------------------ Middleware ------------------ */
+
+const { requireAuthApi } = require("./middleware/requireAuthApi");
+const { requireAuthPage } = require("./middleware/requireAuthPage");
+const { csrfProtection } = require("./middleware/csurf.middleware");
+
+/* ------------------ DB ------------------ */
+
 const { sequelize } = require("./models");
 
 const app = express();
 
-app.use(express.json());
-app.use(cors());
+/* ------------------ GLOBAL MIDDLEWARES ------------------ */
 
-app.post("/api/users", createNewUser);
-app.post("/api/photos", savePhotosToCollection);
-app.post("/api/photos/:photoId/tags", addTag);
+app.use(express.json());
+app.use(cookieParser());
+
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
+
+/* ------------------ RATE LIMITER ------------------ */
+
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+/* ------------------ AUTH ROUTES ------------------ */
+
+app.get("/api/auth/csrf", csrfProtection, getCsrfToken);
+app.post("/api/auth/signup", signup);
+app.get("/api/auth/verify-email", verifyEmail);
+app.post("/api/auth/login", loginLimiter, login);
+app.post("/api/auth/logout", requireAuthApi, csrfProtection, logout);
+app.post("/api/auth/refresh", refresh);
+app.post("/api/auth/forgot-password", forgotPassword);
+app.post("/api/auth/reset-password", resetPassword);
+
+/* ------------------ PROTECTED API ROUTES ------------------ */
+
+app.post("/api/photos", requireAuthApi, csrfProtection, savePhotoToCollection);
+app.post("/api/photos/:photoId/tags", requireAuthApi, csrfProtection, addTag);
+app.get(
+  "/api/photos/tag/search",
+  requireAuthApi,
+  csrfProtection,
+  searchPhotosByTag
+);
+app.get("/api/search-history", requireAuthApi, getSearchHistory);
+
+/* Public */
 app.get("/api/photos/search", getPhotosByQuery);
-app.get("/api/photos/tag/search", searchPhotosByTag);
-app.get("/api/search-history", getSearchHistory);
+
+/* ------------------ FRONTEND ------------------ */
 
 const distPath = path.join(__dirname, "frontend/dist");
 
@@ -31,6 +91,8 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(distPath, "index.html"));
 });
 
+/* ------------------ DB ------------------ */
+
 sequelize
   .authenticate()
   .then(() => {
@@ -39,6 +101,8 @@ sequelize
   .catch((error) => {
     console.error("Unable to connect to database.", error);
   });
+
+/* ------------------ SERVER ------------------ */
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
