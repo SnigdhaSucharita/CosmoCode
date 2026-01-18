@@ -3,19 +3,14 @@ module.exports = (sequelize, DataTypes) => {
     imageUrl: DataTypes.STRING,
     description: DataTypes.STRING,
     altDescription: DataTypes.STRING,
-    aiCaption: DataTypes.TEXT,
-    embedding: DataTypes.ARRAY(DataTypes.FLOAT),
     colorPalette: DataTypes.JSONB,
-    aiProcessed: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
-    },
+    suggestedTags: DataTypes.ARRAY(DataTypes.STRING),
     dateSaved: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
     },
     userId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       references: { model: "user", key: "id" },
     },
   });

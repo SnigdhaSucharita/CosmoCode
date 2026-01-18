@@ -20,6 +20,7 @@ const {
   searchPhotosByTag,
 } = require("./controller/searchSavedPhotos.controller");
 const { getSearchHistory } = require("./controller/searchHistory.controller");
+const { loadPhotoPage } = require("./controller/loadPhotoPage.controller");
 const { getCsrfToken } = require("./controller/csrf.controller");
 
 /* ------------------ Middleware ------------------ */
@@ -76,6 +77,7 @@ app.get(
   csrfProtection,
   searchPhotosByTag
 );
+app.get("/api/photos/:photoId", requireAuthApi, csrfProtection, loadPhotoPage);
 app.get("/api/search-history", requireAuthApi, getSearchHistory);
 
 /* Public */

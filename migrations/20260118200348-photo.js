@@ -1,13 +1,15 @@
 "use strict";
 
+/** @type {import('sequelize-cli').Migration} */
+
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("photos", {
+    await queryInterface.createTable("Photos", {
       id: {
-        type: Sequelize.INTEGER,
+        allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        allowNull: false,
+        type: Sequelize.INTEGER,
       },
 
       imageUrl: {
@@ -25,25 +27,14 @@ module.exports = {
         allowNull: true,
       },
 
-      aiCaption: {
-        type: Sequelize.TEXT,
-        allowNull: true,
-      },
-
-      embedding: {
-        type: Sequelize.ARRAY(Sequelize.FLOAT),
-        allowNull: true,
-      },
-
       colorPalette: {
         type: Sequelize.JSONB,
         allowNull: true,
       },
 
-      aiProcessed: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
+      suggestedTags: {
+        type: Sequelize.ARRAY(Sequelize.STRING),
+        allowNull: true,
       },
 
       dateSaved: {
@@ -53,10 +44,10 @@ module.exports = {
       },
 
       userId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: "users",
+          model: "Users",
           key: "id",
         },
         onUpdate: "CASCADE",
@@ -64,20 +55,20 @@ module.exports = {
       },
 
       createdAt: {
-        type: Sequelize.DATE,
         allowNull: false,
+        type: Sequelize.DATE,
         defaultValue: Sequelize.fn("NOW"),
       },
 
       updatedAt: {
-        type: Sequelize.DATE,
         allowNull: false,
+        type: Sequelize.DATE,
         defaultValue: Sequelize.fn("NOW"),
       },
     });
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("photos");
+    await queryInterface.dropTable("Photos");
   },
 };

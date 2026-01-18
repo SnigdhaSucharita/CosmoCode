@@ -16,7 +16,7 @@ module.exports = {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: "users",
+          model: "Users",
           key: "id",
         },
         onDelete: "CASCADE",
@@ -55,10 +55,10 @@ module.exports = {
       },
     });
 
-    await queryInterface.addIndex("sessions", ["userId"]);
+    await queryInterface.addIndex("Sessions", ["userId"]);
   },
 
   async down(queryInterface) {
-    await queryInterface.dropTable("sessions");
+    await queryInterface.dropTable("Sessions");
   },
 };

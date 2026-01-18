@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   const searchHistory = sequelize.define("searchHistory", {
     query: DataTypes.STRING,
     userId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       references: { model: "user", key: "id" },
     },
     timestamp: {

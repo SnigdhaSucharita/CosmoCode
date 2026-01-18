@@ -1,4 +1,5 @@
 const { photo: photoModel } = require("../models/photo");
+const { callMirAI } = require("../lib/miraiClient");
 
 const {
   validateImageUrl,
@@ -21,14 +22,24 @@ const savePhotoToCollection = async (req, res) => {
       .json({ message: "Each tag must not exceed 20 characters." });
 
   try {
+    const miraiResponse = await callMirAI("/picstoria/analyze-image", {
+      image_url: imageUrl,
+    });
+
+    const { colorPalette, suggestedTags } = miraiResponse;
+
     const newPhoto = await photoModel.create({
       imageUrl,
       description,
       altDescription,
+      colorPalette,
+      suggestedTags,
       userId,
     });
 
-    res.status(201).json({ message: "Photo saved successfully" });
+    res
+      .status(201)
+      .json({ id: newPhoto.id, message: "Photo saved successfully" });
   } catch (error) {
     res
       .status(500)
