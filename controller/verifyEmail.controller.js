@@ -1,5 +1,5 @@
 const { user: userModel } = require("../models/user");
-const { hashToken } = require("../../utils/token.utils");
+const { hashToken } = require("../utils/token.utils");
 
 async function verifyEmail(req, res) {
   const { token, email } = req.query;
