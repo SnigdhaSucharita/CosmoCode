@@ -44,7 +44,7 @@ app.use(
   cors({
     origin: true,
     credentials: true,
-  })
+  }),
 );
 
 /* ------------------ RATE LIMITER ------------------ */
@@ -75,7 +75,7 @@ app.get(
   "/api/photos/tag/search",
   requireAuthApi,
   csrfProtection,
-  searchPhotosByTag
+  searchPhotosByTag,
 );
 app.get("/api/photos/:photoId", requireAuthApi, csrfProtection, loadPhotoPage);
 app.get("/api/search-history", requireAuthApi, getSearchHistory);
@@ -84,7 +84,7 @@ app.get("/api/search-history", requireAuthApi, getSearchHistory);
 app.get("/api/photos/search", getPhotosByQuery);
 
 /* ------------------ FRONTEND ------------------ */
-
+/** 
 const distPath = path.join(__dirname, "frontend/dist");
 
 app.use(express.static(distPath));
@@ -92,7 +92,7 @@ app.use(express.static(distPath));
 app.get("*", (req, res) => {
   res.sendFile(path.join(distPath, "index.html"));
 });
-
+*/
 /* ------------------ DB ------------------ */
 
 sequelize
