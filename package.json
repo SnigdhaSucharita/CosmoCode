@@ -2,6 +2,7 @@
   "name": "picstoria",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "commonjs",
   "scripts": {
     "test": "jest",
     "start": "node index.js",
