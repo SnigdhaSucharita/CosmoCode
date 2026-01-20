@@ -83,16 +83,6 @@ app.get("/api/search-history", requireAuthApi, getSearchHistory);
 /* Public */
 app.get("/api/photos/search", getPhotosByQuery);
 
-/* ------------------ FRONTEND ------------------ */
-/** 
-const distPath = path.join(__dirname, "frontend/dist");
-
-app.use(express.static(distPath));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(distPath, "index.html"));
-});
-*/
 /* ------------------ DB ------------------ */
 
 sequelize
