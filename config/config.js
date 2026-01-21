@@ -8,4 +8,13 @@ module.exports = {
     port: process.env.DB_PORT,
     dialect: "postgres",
   },
+
+  test: {
+    username: process.env.TEST_DB_USER || 'postgres',
+    password: process.env.TEST_DB_PASS || 'postgres',
+    database: process.env.TEST_DB_NAME || 'picstoria_test',
+    host: process.env.TEST_DB_HOST || '127.0.0.1',
+    dialect: 'postgres',
+    logging: false
+  }
 };

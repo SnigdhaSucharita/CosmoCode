@@ -1,4 +1,5 @@
-const { user: userModel, session: sessionModel } = require("../models");
+const { user: userModel } = require("../models/user");
+const { session: sessionModel } = require("../models/session");
 const { comparePassword } = require("../utils/password.utils");
 const { signAccessToken, signRefreshToken } = require("../utils/jwt.utils");
 const {

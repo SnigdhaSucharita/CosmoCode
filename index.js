@@ -67,21 +67,22 @@ app.post("/api/auth/refresh", refresh);
 app.post("/api/auth/forgot-password", forgotPassword);
 app.post("/api/auth/reset-password", resetPassword);
 
+/* ------------------ PUBLIC ROUTES ------------------ */
+
+app.get("/api/photos/search", getPhotosByQuery);
+
 /* ------------------ PROTECTED API ROUTES ------------------ */
 
 app.post("/api/photos", requireAuthApi, csrfProtection, savePhotoToCollection);
-app.post("/api/photos/:photoId/tags", requireAuthApi, csrfProtection, addTag);
+app.get("/api/photos/id/:photoId", requireAuthApi, csrfProtection, loadPhotoPage);
+app.post("/api/photos/id/:photoId/tags", requireAuthApi, csrfProtection, addTag);
 app.get(
   "/api/photos/tag/search",
   requireAuthApi,
   csrfProtection,
   searchPhotosByTag,
 );
-app.get("/api/photos/:photoId", requireAuthApi, csrfProtection, loadPhotoPage);
 app.get("/api/search-history", requireAuthApi, getSearchHistory);
-
-/* Public */
-app.get("/api/photos/search", getPhotosByQuery);
 
 /* ------------------ DB ------------------ */
 
