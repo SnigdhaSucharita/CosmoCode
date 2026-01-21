@@ -11,13 +11,14 @@ const getPhotosByQuery = async (req, res) => {
     const unsplashResults = await searchImages(query);
     const results = await callMirAI("/picstoria/semantic-search", {
       query: query,
-      images: unsplashResults,
+      images: unsplashResults.photos,
     });
     res.json(results);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Internal Server Error", error: error.message });
+    const status = error.response?.status || 500;
+    res.status(status).json({
+      message: error.response?.data || error.message
+    });
   }
 };
 
