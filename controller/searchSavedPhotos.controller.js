@@ -37,7 +37,7 @@ const searchPhotosByTag = async (req, res) => {
 
     const photoIds = tagRecords.map((record) => record.photoId);
     const photos = await photoModel.findAll({
-      where: { id: { [Op.in]: photoIds } },
+      where: { id: { [Op.in]: photoIds }, userId: userId },
       order: [["dateSaved", sort.toUpperCase()]],
       include: {
         model: tagModel,

@@ -21,12 +21,12 @@ const {
 } = require("./controller/searchSavedPhotos.controller");
 const { getSearchHistory } = require("./controller/searchHistory.controller");
 const { loadPhotoPage } = require("./controller/loadPhotoPage.controller");
+const { getAllSavedPhotos } = require("./controller/getCollection.controller");
 const { getCsrfToken } = require("./controller/csrf.controller");
 
 /* ------------------ Middleware ------------------ */
 
 const { requireAuthApi } = require("./middleware/requireAuthApi");
-const { requireAuthPage } = require("./middleware/requireAuthPage");
 const { csrfProtection } = require("./middleware/csurf.middleware");
 
 /* ------------------ DB ------------------ */
@@ -59,13 +59,13 @@ const loginLimiter = rateLimit({
 /* ------------------ AUTH ROUTES ------------------ */
 
 app.get("/api/auth/csrf", csrfProtection, getCsrfToken);
-app.post("/api/auth/signup", signup);
+app.post("/api/auth/signup", csrfProtection, signup);
 app.get("/api/auth/verify-email", verifyEmail);
-app.post("/api/auth/login", loginLimiter, login);
+app.post("/api/auth/login", loginLimiter, csrfProtection, login);
 app.post("/api/auth/logout", requireAuthApi, csrfProtection, logout);
 app.post("/api/auth/refresh", refresh);
-app.post("/api/auth/forgot-password", forgotPassword);
-app.post("/api/auth/reset-password", resetPassword);
+app.post("/api/auth/forgot-password", csrfProtection, forgotPassword);
+app.post("/api/auth/reset-password", csrfProtection, resetPassword);
 
 /* ------------------ PUBLIC ROUTES ------------------ */
 
@@ -73,15 +73,16 @@ app.get("/api/photos/search", getPhotosByQuery);
 
 /* ------------------ PROTECTED API ROUTES ------------------ */
 
+app.get("/api/photos", requireAuthApi, csrfProtection, getAllSavedPhotos);
 app.post("/api/photos", requireAuthApi, csrfProtection, savePhotoToCollection);
-app.get("/api/photos/id/:photoId", requireAuthApi, csrfProtection, loadPhotoPage);
-app.post("/api/photos/id/:photoId/tags", requireAuthApi, csrfProtection, addTag);
 app.get(
   "/api/photos/tag/search",
   requireAuthApi,
   csrfProtection,
   searchPhotosByTag,
 );
+app.get("/api/photos/:photoId", requireAuthApi, csrfProtection, loadPhotoPage);
+app.post("/api/photos/:photoId/tags", requireAuthApi, csrfProtection, addTag);
 app.get("/api/search-history", requireAuthApi, getSearchHistory);
 
 /* ------------------ DB ------------------ */
