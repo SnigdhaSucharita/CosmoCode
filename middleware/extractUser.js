@@ -17,5 +17,5 @@ function extractUser(req, res, next) {
   next();
 }
 
-module.exports = extractUser;
+module.exports = { extractUser };
 
