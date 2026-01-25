@@ -1,4 +1,4 @@
-const { photo: photoModel } = require("../models/photo");
+const { photo: photoModel } = require("../models");
 const { callMirAI } = require("../lib/miraiClient");
 
 const { validateImageUrl } = require("../validations/index");

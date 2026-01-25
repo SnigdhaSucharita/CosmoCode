@@ -1,5 +1,4 @@
-const { photo: photoModel } = require("../models/photo");
-const { tag: tagModel } = require("../models/tag");
+const { photo: photoModel, tag: tagModel } = require("../models");
 
 const getAllSavedPhotos = async (req, res) => {
   const userId = req.user.id;

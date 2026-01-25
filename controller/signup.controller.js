@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { user: userModel } = require("../models/user");
+const { user: userModel } = require("../models");
 const { Op } = require("sequelize");
 const { isValidEmailFormat } = require("../validations/index");
 const { hashPassword } = require("../utils/password.utils");

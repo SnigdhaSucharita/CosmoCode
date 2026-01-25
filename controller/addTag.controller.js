@@ -1,4 +1,4 @@
-const { tag: tagModel } = require("../models/tag");
+const { tag: tagModel } = require("../models");
 
 const addTag = async (req, res) => {
   const { photoId } = req.params;

@@ -1,6 +1,6 @@
 const {
   searchHistory: searchHistoryModel,
-} = require("../models/searchHistory");
+} = require("../models");
 
 const getSearchHistory = async (req, res) => {
   const userId = req.user.id;

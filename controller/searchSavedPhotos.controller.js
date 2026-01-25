@@ -1,8 +1,8 @@
 const { Op } = require("sequelize");
 const {
   searchHistory: searchHistoryModel,
-} = require("../models/searchHistory");
-const { tag: tagModel } = require("../models/tag");
+  tag: tagModel
+} = require("../models");
 
 const searchPhotosByTag = async (req, res) => {
   const { tag, sort = "ASC" } = req.query;

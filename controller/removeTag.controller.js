@@ -1,5 +1,4 @@
-const { tag: tagModel } = require("../models/tag");
-const { photo: photoModel } = require("../models/photo");
+const { tag: tagModel, photo: photoModel } = require("../models");
 
 async function deleteTag(req, res) {
   const { photoId } = req.params;
