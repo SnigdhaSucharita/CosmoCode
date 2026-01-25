@@ -5,7 +5,8 @@ const {
 const { tag: tagModel } = require("../models/tag");
 
 const searchPhotosByTag = async (req, res) => {
-  const { tag, sort = "ASC", userId } = req.query;
+  const { tag, sort = "ASC" } = req.query;
+  const userId = req.user.id;
 
   if (!tag || typeof tag !== "string") {
     return res.status(400).json({ message: "A valid tag must be provided." });

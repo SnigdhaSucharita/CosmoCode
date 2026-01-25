@@ -5,7 +5,7 @@ const {} = require("../utils/imagePool.utils");
 
 const loadPhotoPage = async (req, res) => {
   const { photoId } = req.params;
-  const { userId } = req.user.id;
+  const userId = req.user.id;
 
   const saved = await photoModel.findAll({ where: { photoId, userId } });
 

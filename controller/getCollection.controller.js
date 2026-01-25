@@ -2,7 +2,7 @@ const { photo: photoModel } = require("../models/photo");
 const { tag: tagModel } = require("../models/tag");
 
 const getAllSavedPhotos = async (req, res) => {
-  const { userId } = req.user.id;
+  const userId = req.user.id;
   try {
     const response = await photoModel.findAll({
       where: { userId },

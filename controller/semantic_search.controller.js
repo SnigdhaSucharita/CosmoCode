@@ -6,7 +6,7 @@ const {
 
 const getPhotosByQuery = async (req, res) => {
   const { query } = req.query;
-  const { userId } = req.user?.id || null;
+  const userId = req.user?.id || null;
 
   if (!query)
     return res.status(400).json({ error: "A search term is required." });

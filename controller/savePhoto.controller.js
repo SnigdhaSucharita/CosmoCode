@@ -5,7 +5,7 @@ const { validateImageUrl } = require("../validations/index");
 
 const savePhotoToCollection = async (req, res) => {
   const { imageUrl, description, altDescription } = req.body;
-  const { userId } = req.user.id;
+  const userId = req.user.id;
 
   if (!validateImageUrl(imageUrl))
     return res.status(400).json({ message: "Invaild image URL" });
