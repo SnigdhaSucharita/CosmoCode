@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const photo = sequelize.define("photo", {
+  const photo = sequelize.define("Photo", {
     imageUrl: DataTypes.STRING,
     description: DataTypes.STRING,
     altDescription: DataTypes.STRING,
@@ -11,13 +11,13 @@ module.exports = (sequelize, DataTypes) => {
     },
     userId: {
       type: DataTypes.UUID,
-      references: { model: "user", key: "id" },
+      references: { model: "User", key: "id" },
     },
   });
 
   photo.associate = (models) => {
-    photo.belongsTo(models.user, { foreignKey: "userId" });
-    photo.hasMany(models.tag, { foreignKey: "photoId" });
+    photo.belongsTo(models.User, { foreignKey: "userId" });
+    photo.hasMany(models.Tag, { foreignKey: "photoId" });
   };
 
   return photo;

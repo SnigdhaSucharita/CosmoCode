@@ -1,7 +1,7 @@
 const { searchImages } = require("../utils/search.utils");
 const { callMirAI } = require("../lib/miraiClient");
 const {
-  searchHistory: searchHistoryModel,
+  SearchHistory: searchHistoryModel,
 } = require("../models");
 
 const getPhotosByQuery = async (req, res) => {

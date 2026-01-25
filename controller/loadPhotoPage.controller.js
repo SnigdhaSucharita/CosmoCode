@@ -1,6 +1,6 @@
-const { photo: photoModel, tag: tagModel } = require("../models");
+const { Photo: photoModel, Tag: tagModel } = require("../models");
 const { callMirAI } = require("../lib/miraiClient");
-const {} = require("../utils/imagePool.utils");
+const { buildImagePoolFromUnsplash } = require("../utils/imagePool.utils");
 
 const loadPhotoPage = async (req, res) => {
   const { photoId } = req.params;

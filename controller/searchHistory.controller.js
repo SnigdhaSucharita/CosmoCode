@@ -1,5 +1,5 @@
 const {
-  searchHistory: searchHistoryModel,
+  SearchHistory: searchHistoryModel,
 } = require("../models");
 
 const getSearchHistory = async (req, res) => {

@@ -1,4 +1,4 @@
-const { user: userModel, session: sessionModel } = require("../models");
+const { User: userModel, Session: sessionModel } = require("../models");
 const { hashPassword } = require("../utils/password.utils");
 const { hashToken } = require("../utils/token.utils");
 

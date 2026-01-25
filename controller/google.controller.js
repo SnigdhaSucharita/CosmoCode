@@ -1,5 +1,5 @@
 const passport = require("passport");
-const { session: sessionModel } = require("../models");
+const { Session: sessionModel } = require("../models");
 const { signAccessToken, signRefreshToken } = require("../utils/jwt.utils");
 const {
   setRefreshTokenCookie,

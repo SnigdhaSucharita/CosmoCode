@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const searchHistory = sequelize.define("searchHistory", {
+  const searchHistory = sequelize.define("SearchHistory", {
     query: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     userId: {
       type: DataTypes.UUID,
-      references: { model: "user", key: "id" },
+      references: { model: "User", key: "id" },
     },
     timestamp: {
       type: DataTypes.DATE,
@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   searchHistory.associate = (models) => {
-    searchHistory.belongsTo(models.user, { foreignKey: "userId" });
+    searchHistory.belongsTo(models.User, { foreignKey: "userId" });
   };
 
   return searchHistory;

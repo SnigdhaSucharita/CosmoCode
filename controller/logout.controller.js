@@ -1,4 +1,4 @@
-const { session: sessionModel } = require("../models");
+const { Session: sessionModel } = require("../models");
 const { clearAuthCookies } = require("../utils/cookie.utils");
 const { hashToken } = require("../utils/token.utils");
 

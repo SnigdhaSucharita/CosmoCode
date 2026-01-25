@@ -1,4 +1,4 @@
-const { user: userModel } = require("../models");
+const { User: userModel } = require("../models");
 const { generateToken, hashToken } = require("../utils/token.utils");
 const { sendEmail } = require("../utils/email.utils");
 const { PASSWORD_RESET_TOKEN_EXPIRY_MS } = require("../config/auth.config");

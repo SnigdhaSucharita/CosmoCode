@@ -1,4 +1,4 @@
-const { session: sessionModel, user: userModel } = require("../models");
+const { Session: sessionModel, User: userModel } = require("../models");
 const { signAccessToken, signRefreshToken } = require("../utils/jwt.utils");
 const { setRefreshTokenCookie } = require("../utils/cookie.utils");
 const { hashToken } = require("../utils/token.utils");

@@ -1,7 +1,7 @@
 const { Op } = require("sequelize");
 const {
-  searchHistory: searchHistoryModel,
-  tag: tagModel
+  SearchHistory: searchHistoryModel,
+  Tag: tagModel
 } = require("../models");
 
 const searchPhotosByTag = async (req, res) => {

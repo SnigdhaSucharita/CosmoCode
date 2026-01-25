@@ -1,6 +1,5 @@
-"use strict";
 module.exports = (sequelize, DataTypes) => {
-  const user = sequelize.define("user", {
+  const user = sequelize.define("User", {
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
@@ -43,17 +42,17 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   user.associate = (models) => {
-    user.hasMany(models.session, {
+    user.hasMany(models.Session, {
       foreignKey: "userId",
-      as: "sessions",
+      as: "Sessions",
     });
-    user.hasMany(models.photo, {
+    user.hasMany(models.Photo, {
       foreignKey: "userId",
-      as: "photos",
+      as: "Photos",
     });
-    user.hasMany(models.searchHistory, {
+    user.hasMany(models.SearchHistory, {
       foreignKey: "userId",
-      as: "searchHistories",
+      as: "SearchHistories",
     });
   };
 

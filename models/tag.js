@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const tag = sequelize.define("tag", {
+  const tag = sequelize.define("Tag", {
     name: DataTypes.STRING,
     type: {
       type: DataTypes.ENUM("ai", "custom"),
@@ -8,12 +8,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     photoId: {
       type: DataTypes.INTEGER,
-      references: { model: "photo", key: "id" },
+      references: { model: "Photo", key: "id" },
     },
   });
 
   tag.associate = (models) => {
-    tag.belongsTo(models.photo, { foreignKey: "photoId" });
+    tag.belongsTo(models.Photo, { foreignKey: "photoId" });
   };
 
   return tag;

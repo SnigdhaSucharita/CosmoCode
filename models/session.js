@@ -1,6 +1,5 @@
-"use strict";
 module.exports = (sequelize, DataTypes) => {
-  const session = sequelize.define("session", {
+  const session = sequelize.define("Session", {
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
@@ -19,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   session.associate = (models) => {
-    session.belongsTo(models.user, {
+    session.belongsTo(models.User, {
       foreignKey: "userId",
       onDelete: "CASCADE",
     });

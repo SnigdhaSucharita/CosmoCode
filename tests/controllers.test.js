@@ -1,21 +1,19 @@
-jest.mock("../models/user", () => ({
+jest.mock("../models", () => ({
   user: {
     findOne: jest.fn(),
     create: jest.fn(),
   },
-}));
 
-jest.mock("../models/session", () => ({
   session: {
     create: jest.fn(),
   },
-}));
 
-jest.mock("../models/photo", () => ({
   photo: {
     create: jest.fn(),
   },
+
 }));
+
 
 jest.mock("../validations", () => ({
   isValidEmailFormat: jest.fn(),
