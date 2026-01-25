@@ -3,9 +3,9 @@ const { hashPassword } = require("../utils/password.utils");
 const { hashToken } = require("../utils/token.utils");
 
 async function resetPassword(req, res) {
-  const { token, email, newPassword } = req.body;
+  const { token, email, Password } = req.body;
 
-  if (!token || !email || !newPassword) {
+  if (!token || !email || !Password) {
     return res.status(400).json({ error: "Invalid request" });
   }
 
@@ -21,7 +21,7 @@ async function resetPassword(req, res) {
     return res.status(400).json({ error: "Invalid or expired token" });
   }
 
-  const passwordHash = await hashPassword(newPassword);
+  const passwordHash = await hashPassword(Password);
 
   await user.update({
     passwordHash,

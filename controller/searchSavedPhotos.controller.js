@@ -21,6 +21,7 @@ const searchPhotosByTag = async (req, res) => {
     if (userId) {
       await searchHistoryModel.create({
         query: tag,
+        type: "tag-search",
         userId: parseInt(userId),
       });
     }
@@ -51,7 +52,7 @@ const searchPhotosByTag = async (req, res) => {
       description: photo.description,
       altDescription: photo.altDescription,
       dateSaved: photo.dateSaved,
-      tags: photo.tags.map((tag) => tag.name),
+      customTags: photo.tags.map((tag) => tag.name),
     }));
 
     res.json({ photos: response });

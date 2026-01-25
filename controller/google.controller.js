@@ -1,4 +1,5 @@
-const { session: sessionModel } = require("../models");
+const passport = require("passport");
+const { session: sessionModel } = require("../models/session");
 const { signAccessToken, signRefreshToken } = require("../utils/jwt.utils");
 const {
   setRefreshTokenCookie,
@@ -6,39 +7,63 @@ const {
 } = require("../utils/cookie.utils");
 const { hashToken } = require("../utils/token.utils");
 
-async function googleCallback(req, res) {
-  const user = req.user;
+/**
+ * GET /api/auth/google
+ * Redirects user to Google OAuth
+ */
+const googleAuth = passport.authenticate("google", {
+  scope: ["profile", "email"],
+});
 
-  await user.update({
-    isVerified: true,
-    failedLoginAttempts: 0,
-    lockUntil: null,
-  });
+/**
+ * GET /api/auth/google/callback
+ * Handles Google OAuth callback
+ */
+async function googleCallback(req, res, next) {
+  passport.authenticate("google", { session: false }, async (err, user) => {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      return res.redirect(`${process.env.FRONTEND_URL}/login`);
+    }
+    // Reset security state
+    await user.update({
+      isVerified: true,
+      failedLoginAttempts: 0,
+      lockUntil: null,
+    });
 
-  const refreshToken = signRefreshToken({
-    userId: user.id,
-    tokenVersion: user.tokenVersion,
-  });
+    // Refresh token
+    const refreshToken = signRefreshToken({
+      userId: user.id,
+      tokenVersion: user.tokenVersion,
+    });
 
-  await sessionModel.create({
-    userId: user.id,
-    refreshTokenHash: hashToken(refreshToken),
-    userAgent: req.headers["user-agent"],
-    ipAddress: req.ip,
-    expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-  });
+    await sessionModel.create({
+      userId: user.id,
+      refreshTokenHash: hashToken(refreshToken),
+      userAgent: req.headers["user-agent"],
+      ipAddress: req.ip,
+      expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+    });
 
-  const accessToken = signAccessToken({
-    userId: user.id,
-    tokenVersion: user.tokenVersion,
-  });
+    // Access token
+    const accessToken = signAccessToken({
+      userId: user.id,
+      tokenVersion: user.tokenVersion,
+    });
 
-  // Set BOTH cookies
-  setRefreshTokenCookie(res, refreshToken);
-  setAccessTokenCookie(res, accessToken);
+    // Set cookies
+    setRefreshTokenCookie(res, refreshToken);
+    setAccessTokenCookie(res, accessToken);
 
-  // Redirect to rendered frontend page
-  return res.redirect("/dashboard");
+    // Redirect to frontend page
+    return res.redirect(`${process.env.FRONTEND_URL}/collection`);
+  })(req, res, next);
 }
 
-module.exports = { googleCallback };
+module.exports = {
+  googleAuth,
+  googleCallback,
+};

@@ -9,10 +9,14 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
-    async (_, __, profile, done) => {
+    async (_accessToken, _refreshToken, profile, done) => {
       try {
-        const email = profile.emails[0].value;
+        const email = profile.emails?.[0]?.value;
         const googleId = profile.id;
+
+        if (!email) {
+          return done(new Error("Google account has no email"));
+        }
 
         let user = await userModel.findOne({ where: { email } });
 
@@ -21,12 +25,13 @@ passport.use(
             email,
             username: profile.displayName.replace(/\s/g, "").toLowerCase(),
             googleId,
-            isVerified: true, // Google already verified email
+            isVerified: true,
             passwordHash: null,
           });
         } else if (!user.googleId) {
-          // Link existing account
+          // Link Google account to existing user
           user.googleId = googleId;
+          user.isVerified = true;
           await user.save();
         }
 
@@ -34,8 +39,8 @@ passport.use(
       } catch (err) {
         return done(err);
       }
-    }
-  )
+    },
+  ),
 );
 
-module.exports = { passport };
+module.exports = passport;

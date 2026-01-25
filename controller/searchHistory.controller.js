@@ -3,7 +3,7 @@ const {
 } = require("../models/searchHistory");
 
 const getSearchHistory = async (req, res) => {
-  const { userId } = req.query;
+  const userId = req.user.id;
 
   if (!userId || isNaN(userId)) {
     return res
@@ -18,7 +18,13 @@ const getSearchHistory = async (req, res) => {
       order: [["timestamp", "DESC"]],
     });
 
-    res.json({ searchHistory });
+    const items = searchHistory.map((item) => ({
+      id: item.id,
+      query: item.query,
+      timestamp: item.timestamp.toISOString(),
+    }));
+
+    res.json({ history: items });
   } catch (error) {
     res
       .status(500)

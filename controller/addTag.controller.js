@@ -1,19 +1,17 @@
 const { tag: tagModel } = require("../models/tag");
 
-const { containsNonEmptyStrings } = require("../validations/index");
-
 const addTag = async (req, res) => {
   const { photoId } = req.params;
-  const { tags } = req.body;
+  const { tag, type } = req.body;
 
-  if (!containsNonEmptyStrings(tags)) {
-    return res.status(400).json({ message: "Tags must be non-empty strings." });
+  if (!tag) {
+    return res.status(400).json({ message: "Tag must be a non-empty string." });
   }
 
   try {
     const existingTagObjects = await tagModel.findAll({ where: { photoId } });
     const existingTags = existingTagObjects.map((tag) => tag.name);
-    const totalTags = [...new Set([...existingTags, ...tags])];
+    const totalTags = [...new Set([...existingTags, tag])];
 
     if (totalTags.length > 5) {
       return res
@@ -21,12 +19,15 @@ const addTag = async (req, res) => {
         .json({ message: "A photo can have a maximum of 5 tags." });
     }
 
-    const tagsToAdd = tags.filter((tag) => !existingTags.includes(tag));
-    await tagModel.bulkCreate(tagsToAdd.map((tag) => ({ name: tag, photoId })));
+    if (!existingTags.includes(tag)) {
+      await tagModel.create({
+        name: tag,
+        type: type,
+        photoId: photoId,
+      });
+    }
 
-    res
-      .status(201)
-      .json({ message: "Tags added successfully.", tags: totalTags });
+    res.status(201).json({ message: "Tag added successfully." });
   } catch (error) {
     res
       .status(500)

@@ -58,7 +58,8 @@ async function login(req, res) {
   // Email verification check
   if (!user.isVerified) {
     return res.status(403).json({
-      error: "Please verify your email first",
+      success: false,
+      message: "Please verify your email before logging in",
     });
   }
 
@@ -93,6 +94,7 @@ async function login(req, res) {
   setAccessTokenCookie(res, accessToken);
 
   return res.json({
+    message: "Login successful.",
     user: {
       id: user.id,
       username: user.username,

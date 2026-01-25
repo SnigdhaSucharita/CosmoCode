@@ -28,7 +28,7 @@ async function forgotPassword(req, res) {
   });
 
   const resetLink = `${
-    process.env.APP_BASE_URL
+    process.env.FRONTEND_URL
   }/reset-password?token=${resetToken}&email=${encodeURIComponent(email)}`;
 
   await sendEmail({

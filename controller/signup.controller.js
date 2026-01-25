@@ -39,7 +39,7 @@ async function signup(req, res) {
   const verifyLink = `${
     process.env.APP_BASE_URL
   }/api/auth/verify-email?token=${verificationToken}&email=${encodeURIComponent(
-    email
+    email,
   )}`;
 
   await sendEmail({
@@ -54,6 +54,7 @@ async function signup(req, res) {
   });
 
   return res.status(201).json({
+    success: true,
     message: "Signup successful. Please verify your email.",
   });
 }

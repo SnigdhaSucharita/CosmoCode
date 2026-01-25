@@ -17,6 +17,11 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
       validate: { isEmail: true },
     },
+    googleId: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      unique: true,
+    },
     passwordHash: DataTypes.STRING,
     isVerified: {
       type: DataTypes.BOOLEAN,
