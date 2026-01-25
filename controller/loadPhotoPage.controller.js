@@ -1,6 +1,5 @@
 const { photo: photoModel } = require("../models/photo");
 const { tag: tagModel } = require("../models/tag");
-const { photo: photoModel } = require("../models/photo");
 const { callMirAI } = require("../lib/miraiClient");
 const {} = require("../utils/imagePool.utils");
 
