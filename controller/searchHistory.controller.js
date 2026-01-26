@@ -1,6 +1,4 @@
-const {
-  SearchHistory: searchHistoryModel,
-} = require("../models");
+const { SearchHistory: searchHistoryModel } = require("../models");
 
 const getSearchHistory = async (req, res) => {
   const userId = req.user.id;
@@ -21,6 +19,7 @@ const getSearchHistory = async (req, res) => {
     const items = searchHistory.map((item) => ({
       id: item.id,
       query: item.query,
+      type: item.type,
       timestamp: item.timestamp.toISOString(),
     }));
 
