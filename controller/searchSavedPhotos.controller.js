@@ -1,7 +1,7 @@
 const { Op } = require("sequelize");
 const {
   SearchHistory: searchHistoryModel,
-  Tag: tagModel
+  Tag: tagModel,
 } = require("../models");
 
 const searchPhotosByTag = async (req, res) => {
@@ -51,9 +51,10 @@ const searchPhotosByTag = async (req, res) => {
       id: photo.id,
       imageUrl: photo.imageUrl,
       description: photo.description,
-      altDescription: photo.altDescription,
-      dateSaved: photo.dateSaved,
+      colorPalette: photo.colorPalette,
+      suggestedTags: photo.suggestedTags,
       customTags: photo.tags.map((tag) => tag.name),
+      dateSaved: photo.dateSaved.toISOString(),
     }));
 
     res.json({ photos: response });

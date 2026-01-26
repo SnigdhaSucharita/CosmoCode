@@ -4,7 +4,7 @@ const { callMirAI } = require("../lib/miraiClient");
 const { validateImageUrl } = require("../validations/index");
 
 const savePhotoToCollection = async (req, res) => {
-  const { imageUrl, description, altDescription } = req.body;
+  const { imageUrl, description } = req.body;
   const userId = req.user.id;
 
   if (!validateImageUrl(imageUrl))
@@ -20,7 +20,6 @@ const savePhotoToCollection = async (req, res) => {
     const newPhoto = await photoModel.create({
       imageUrl,
       description,
-      altDescription,
       colorPalette,
       suggestedTags,
       userId,

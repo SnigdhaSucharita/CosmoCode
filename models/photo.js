@@ -2,7 +2,6 @@ module.exports = (sequelize, DataTypes) => {
   const photo = sequelize.define("Photo", {
     imageUrl: DataTypes.STRING,
     description: DataTypes.STRING,
-    altDescription: DataTypes.STRING,
     colorPalette: DataTypes.JSONB,
     suggestedTags: DataTypes.ARRAY(DataTypes.STRING),
     dateSaved: {

@@ -48,7 +48,6 @@ const loadPhotoPage = async (req, res) => {
         id: photo.id,
         imageUrl: photo.imageUrl,
         description: photo.description,
-        altDescription: photo.altDescription,
         colorPalette: photo.colorPalette,
         suggestedTags: photo.suggestedTags,
         customTags: customTags,

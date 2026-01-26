@@ -57,7 +57,6 @@ async function login(req, res) {
   // Email verification check
   if (!user.isVerified) {
     return res.status(403).json({
-      success: false,
       message: "Please verify your email before logging in",
     });
   }
