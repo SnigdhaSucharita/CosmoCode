@@ -23,11 +23,11 @@ const getPhotosByQuery = async (req, res) => {
 
     const sanitizedImages = sanitizeImages(unsplashResults.photos);
 
-    const results = await callMirAI("/picstoria/semantic-search", {
+    const result = await callMirAI("/picstoria/semantic-search", {
       query: query,
       images: sanitizedImages,
     });
-    res.json(results);
+    res.json({ result });
   } catch (error) {
     console.error("Semantic search error:", error);
     const status = error.response?.status || 500;
