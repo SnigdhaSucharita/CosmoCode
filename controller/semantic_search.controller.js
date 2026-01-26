@@ -19,9 +19,15 @@ const getPhotosByQuery = async (req, res) => {
 
   try {
     const unsplashResults = await searchImages(query);
+
+    const sanitizedImages = unsplashResults.photos.slice(0, 6).map((img) => ({
+      imageUrl: img.imageUrl,
+      description: img.description || img.altDescription || "",
+    }));
+
     const results = await callMirAI("/picstoria/semantic-search", {
       query: query,
-      images: unsplashResults.photos,
+      images: sanitizedImages,
     });
     res.json(results);
   } catch (error) {
