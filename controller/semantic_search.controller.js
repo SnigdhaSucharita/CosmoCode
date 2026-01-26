@@ -1,6 +1,7 @@
 const { searchImages } = require("../utils/search.utils");
 const { callMirAI } = require("../lib/miraiClient");
 const { SearchHistory: searchHistoryModel } = require("../models");
+const { sanitizeImages } = require("../utils/sanitization.utils");
 
 const getPhotosByQuery = async (req, res) => {
   const { query } = req.query;
@@ -20,10 +21,7 @@ const getPhotosByQuery = async (req, res) => {
   try {
     const unsplashResults = await searchImages(query);
 
-    const sanitizedImages = unsplashResults.photos.slice(0, 6).map((img) => ({
-      imageUrl: img.imageUrl,
-      description: img.description || img.altDescription || "",
-    }));
+    const sanitizedImages = sanitizedImages(unsplashResults.photos);
 
     const results = await callMirAI("/picstoria/semantic-search", {
       query: query,

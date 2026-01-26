@@ -1,6 +1,7 @@
 const { Photo: photoModel, Tag: tagModel } = require("../models");
 const { callMirAI } = require("../lib/miraiClient");
 const { buildImagePoolFromUnsplash } = require("../utils/imagePool.utils");
+const { sanitizeImages } = require("../utils/sanitization.utils");
 
 const loadPhotoPage = async (req, res) => {
   const { photoId } = req.params;
@@ -28,10 +29,12 @@ const loadPhotoPage = async (req, res) => {
 
     const tags = [...customTags, ...photo.suggestedTags];
 
-    const imagePool = await buildImagePoolFromUnsplash({
+    const image_pool = await buildImagePoolFromUnsplash({
       query: photo.description || photo.altDescription,
       tags,
     });
+
+    const imagePool = sanitizeImages(image_pool);
 
     const recommendations = await callMirAI("/picstoria/recommend-images", {
       image_url: photo.imageUrl,

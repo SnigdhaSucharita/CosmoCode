@@ -1,8 +1,15 @@
 const { searchImages } = require("./search.utils");
 
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
 async function buildImagePoolFromUnsplash({ query, tags = [], limit = 40 }) {
   /**
-   * Map structure:
    * key   → imageUrl
    * value → { imageUrl, description, altDescription }
    */
@@ -11,6 +18,7 @@ async function buildImagePoolFromUnsplash({ query, tags = [], limit = 40 }) {
   const addImagesToPool = (results = []) => {
     for (const img of results) {
       const imageUrl = img.imageUrl;
+      if (!imageUrl) continue;
 
       if (!poolMap.has(imageUrl)) {
         poolMap.set(imageUrl, {
@@ -34,8 +42,14 @@ async function buildImagePoolFromUnsplash({ query, tags = [], limit = 40 }) {
     addImagesToPool(results);
   }
 
-  // Convert Map → Array and apply limit
-  return Array.from(poolMap.values()).slice(0, limit);
+  // Map → Array
+  const pool = Array.from(poolMap.values());
+
+  // 🔀 Shuffle to remove query bias
+  shuffleArray(pool);
+
+  // Apply limit after shuffle
+  return pool.slice(0, limit);
 }
 
 module.exports = { buildImagePoolFromUnsplash };
