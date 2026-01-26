@@ -42,19 +42,22 @@ async function signup(req, res) {
     email,
   )}`;
 
-  await sendEmail({
-    to: email,
-    subject: "Verify your Picstoria account",
-    html: `
-      <h2>Welcome to Picstoria</h2>
-      <p>Please verify your email to activate your account.</p>
-      <a href="${verifyLink}">Verify Email</a>
-      <p>This link expires in 24 hours.</p>
-    `,
-  });
+  try {
+    await sendEmail({
+      to: email,
+      subject: "Verify your Picstoria account",
+      html: `
+        <h2>Welcome to Picstoria</h2>
+        <p>Please verify your email to activate your account.</p>
+        <a href="${verifyLink}">Verify Email</a>
+        <p>This link expires in 24 hours.</p>
+      `,
+    });
+  } catch (err) {
+    console.error("Email failed:", err.message);
+  }
 
   return res.status(201).json({
-    success: true,
     message: "Signup successful. Please verify your email.",
   });
 }

@@ -1,8 +1,6 @@
 const { searchImages } = require("../utils/search.utils");
 const { callMirAI } = require("../lib/miraiClient");
-const {
-  SearchHistory: searchHistoryModel,
-} = require("../models");
+const { SearchHistory: searchHistoryModel } = require("../models");
 
 const getPhotosByQuery = async (req, res) => {
   const { query } = req.query;
@@ -27,6 +25,7 @@ const getPhotosByQuery = async (req, res) => {
     });
     res.json(results);
   } catch (error) {
+    console.error("Semantic search error:", error);
     const status = error.response?.status || 500;
     res.status(status).json({
       message: error.response?.data || error.message,
