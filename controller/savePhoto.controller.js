@@ -25,9 +25,11 @@ const savePhotoToCollection = async (req, res) => {
       userId,
     });
 
-    res
-      .status(201)
-      .json({ id: newPhoto.id, message: "Photo saved successfully" });
+    res.status(201).json({
+      photo: {
+        id: newPhoto.id,
+      },
+    });
   } catch (error) {
     res
       .status(500)

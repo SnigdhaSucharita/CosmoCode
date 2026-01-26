@@ -24,6 +24,7 @@ const {
 const { getSearchHistory } = require("./controller/searchHistory.controller");
 const { loadPhotoPage } = require("./controller/loadPhotoPage.controller");
 const { getAllSavedPhotos } = require("./controller/getCollection.controller");
+const { getCurrentUser } = require("./controller/auth.controller");
 const { getCsrfToken } = require("./controller/csrf.controller");
 const {
   googleAuth,
@@ -76,6 +77,7 @@ app.post("/api/auth/forgot-password", csrfProtection, forgotPassword);
 app.post("/api/auth/reset-password", csrfProtection, resetPassword);
 app.get("/api/auth/google", googleAuth);
 app.get("/api/auth/google/callback", googleCallback);
+app.get("/api/auth/me", requireAuthApi, getCurrentUser);
 
 /* ------------------ PUBLIC ROUTES ------------------ */
 
