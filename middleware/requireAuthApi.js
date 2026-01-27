@@ -3,7 +3,7 @@ const { User } = require("../models");
 
 async function requireAuthApi(req, res, next) {
   try {
-    const token = req.cookies?.accessToken;
+    const token = req.cookies?.access;
     if (!token) {
       return res.status(401).json({ message: "Not authenticated" });
     }

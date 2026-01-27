@@ -31,6 +31,12 @@ const savePhotoToCollection = async (req, res) => {
       },
     });
   } catch (error) {
+    if (err.name === "SequelizeUniqueConstraintError") {
+      return res.status(409).json({
+        message: "Photo already saved",
+      });
+    }
+
     res
       .status(500)
       .json({ message: "Internal Server Error", error: error.message });

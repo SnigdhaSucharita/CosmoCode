@@ -12,6 +12,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       references: { model: "User", key: "id" },
     },
+    indexes: [
+      {
+        unique: true,
+        fields: ["userId", "imageUrl"],
+      },
+    ],
   });
 
   photo.associate = (models) => {
