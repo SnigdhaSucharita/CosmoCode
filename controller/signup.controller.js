@@ -36,11 +36,8 @@ async function signup(req, res) {
     verificationExpiresAt: new Date(Date.now() + EMAIL_TOKEN_EXPIRY_MS),
   });
 
-  const verifyLink = `${
-    process.env.APP_BASE_URL
-  }/api/auth/verify-email?token=${verificationToken}&email=${encodeURIComponent(
-    email,
-  )}`;
+  const verifyLink = `${process.env.FRONTEND_URL}
+    /verify-email?token=${verificationToken}&email=${encodeURIComponent(email)}`;
 
   try {
     await sendEmail({
@@ -53,6 +50,7 @@ async function signup(req, res) {
         <p>This link expires in 24 hours.</p>
       `,
     });
+    await user.update({ emailSent: true });
   } catch (err) {
     console.error("Email failed:", err.message);
   }

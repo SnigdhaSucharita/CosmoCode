@@ -5,22 +5,24 @@ async function verifyEmail(req, res) {
   const { token, email } = req.query;
 
   if (!token || !email) {
-    return res.status(400).send("Invalid verification link");
+    return res.status(400).json({ message: "Invalid verification link" });
   }
 
   const user = await userModel.findOne({ where: { email } });
 
   if (!user || !user.verificationTokenHash) {
-    return res.status(400).send("Invalid or expired link");
+    return res.status(400).json({ message: "Invalid or expired link" });
   }
 
   const incomingHash = hashToken(token);
 
-  if (
-    incomingHash !== user.verificationTokenHash ||
-    user.verificationExpiresAt < new Date()
-  ) {
-    return res.status(400).send("Invalid or expired link");
+  const isExpired = user.verificationExpiresAt < new Date();
+  const isInvalid = incomingHash !== user.verificationTokenHash;
+
+  if (isInvalid || isExpired) {
+    return res.status(400).json({
+      message: isExpired ? "Link expired" : "Invalid verification link",
+    });
   }
 
   user.isVerified = true;
@@ -29,7 +31,10 @@ async function verifyEmail(req, res) {
 
   await user.save();
 
-  return res.send("Email verified successfully. You can now log in.");
+  return res.json({
+    success: true,
+    message: "Email verified successfully",
+  });
 }
 
 module.exports = { verifyEmail };

@@ -9,6 +9,9 @@ const passport = require("./config/passport");
 
 const { signup } = require("./controller/signup.controller");
 const { verifyEmail } = require("./controller/verifyEmail.controller");
+const {
+  resendVerification,
+} = require("./controller/resendVerification.controller");
 const { login } = require("./controller/login.controller");
 const { logout } = require("./controller/logout.controller");
 const { refresh } = require("./controller/refresh.controller");
@@ -65,11 +68,17 @@ const loginLimiter = rateLimit({
   legacyHeaders: false,
 });
 
+const signupLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+});
+
 /* ------------------ AUTH ROUTES ------------------ */
 
 app.get("/api/auth/csrf", csrfProtection, getCsrfToken);
-app.post("/api/auth/signup", csrfProtection, signup);
+app.post("/api/auth/signup", signupLimiter, csrfProtection, signup);
 app.get("/api/auth/verify-email", verifyEmail);
+app.post("/api/auth/resend-verification", resendVerification);
 app.post("/api/auth/login", loginLimiter, csrfProtection, login);
 app.post("/api/auth/logout", requireAuthApi, csrfProtection, logout);
 app.post("/api/auth/refresh", refresh);

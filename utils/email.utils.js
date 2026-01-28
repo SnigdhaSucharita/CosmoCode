@@ -5,7 +5,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 async function sendEmail({ to, subject, html }) {
   await resend.emails.send({
-    from: "noreply@picstoria.app",
+    from: "Picstoria <onboarding@resend.dev>",
     to,
     subject,
     html,
@@ -13,4 +13,3 @@ async function sendEmail({ to, subject, html }) {
 }
 
 module.exports = { sendEmail };
-

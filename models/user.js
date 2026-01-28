@@ -16,6 +16,11 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
       validate: { isEmail: true },
     },
+    emailSent: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
     googleId: {
       type: DataTypes.STRING,
       allowNull: true,
