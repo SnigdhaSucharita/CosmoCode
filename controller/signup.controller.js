@@ -56,6 +56,7 @@ async function signup(req, res) {
   }
 
   return res.status(201).json({
+    success: true,
     message: "Signup successful. Please verify your email.",
   });
 }

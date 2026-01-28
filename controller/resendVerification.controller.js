@@ -1,4 +1,3 @@
-const crypto = require("crypto");
 const { User: userModel } = require("../models");
 const { generateToken, hashToken } = require("../utils/token.utils");
 const { sendEmail } = require("../utils/email.utils");
