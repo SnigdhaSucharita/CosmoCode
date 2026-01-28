@@ -36,8 +36,7 @@ async function signup(req, res) {
     verificationExpiresAt: new Date(Date.now() + EMAIL_TOKEN_EXPIRY_MS),
   });
 
-  const verifyLink = `${process.env.FRONTEND_URL}
-    /verify-email?token=${verificationToken}&email=${encodeURIComponent(email)}`;
+  const verifyLink = `${process.env.FRONTEND_URL}/verify-email?token=${verificationToken}&email=${encodeURIComponent(email)}`;
 
   try {
     await sendEmail({

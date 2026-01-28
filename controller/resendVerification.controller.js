@@ -46,7 +46,9 @@ async function resendVerification(req, res) {
         <p>This link expires in 24 hours.</p>
       `,
     });
-    await user.update({ emailSent: true });
+    if (user.emailSent !== true) {
+      await user.update({ emailSent: true });
+    }
   } catch (err) {
     console.error("Email failed:", err.message);
   }
