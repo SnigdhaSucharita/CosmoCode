@@ -19,12 +19,6 @@ sequelize = new Sequelize(
     host: config.host,
     dialect: "postgres",
     port: config.port,
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false,
-      },
-    },
   },
   config,
 );
