@@ -5,6 +5,7 @@ function setRefreshTokenCookie(res, token) {
     httpOnly: true,
     secure: isProd,
     sameSite: isProd ? "none" : "lax",
+    domain: ".picstoria-sage.vercel.app",
     path: "/api/auth/refresh",
     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
   });
@@ -15,6 +16,8 @@ function setAccessTokenCookie(res, token) {
     httpOnly: true,
     secure: isProd,
     sameSite: isProd ? "none" : "lax",
+    domain: ".picstoria-sage.vercel.app",
+    path: "/",
     maxAge: 15 * 60 * 1000, // 15 min
   });
 }
