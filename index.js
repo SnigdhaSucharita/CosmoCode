@@ -111,7 +111,7 @@ app.get("/api/search-history", requireAuthApi, getSearchHistory);
 
 /* ------------------ DB ------------------ */
 
-sconsole.log("Before authenticate");
+console.log("Before authenticate");
 
 sequelize
   .authenticate()
