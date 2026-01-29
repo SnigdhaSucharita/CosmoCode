@@ -11,17 +11,39 @@ const db = {};
 
 let sequelize;
 
-sequelize = new Sequelize(
-  config.database,
-  config.username,
-  config.password,
-  {
-    host: config.host,
+if (process.env.DATABASE_URL) {
+  // Production / Supabase Transaction Pooler
+  sequelize = new Sequelize(process.env.DATABASE_URL, {
     dialect: "postgres",
-    port: config.port,
-  },
-  config,
-);
+    logging: false,
+
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
+
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000,
+    },
+  });
+} else {
+  // Local development
+  sequelize = new Sequelize(
+    config.database,
+    config.username,
+    config.password,
+    {
+      host: config.host,
+      port: config.port,
+      dialect: "postgres",
+    }
+  );
+}
 
 fs.readdirSync(__dirname)
   .filter((file) => {
