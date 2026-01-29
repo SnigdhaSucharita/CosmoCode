@@ -2,12 +2,20 @@
 
 const fs = require("fs");
 const path = require("path");
+const pg = require("pg");
 const Sequelize = require("sequelize");
 const process = require("process");
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || "development";
 const config = require(__dirname + "/../config/config.js")[env];
 const db = {};
+
+
+pg.defaults.ssl = {
+  require: true,
+  rejectUnauthorized: false,
+};
+
 
 let sequelize;
 
@@ -16,12 +24,6 @@ if (process.env.DATABASE_URL) {
   sequelize = new Sequelize(process.env.DATABASE_URL, {
     dialect: "postgres",
     logging: false,
-
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false,
-      },
     },
 
     pool: {
