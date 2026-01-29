@@ -12,19 +12,16 @@ const {
 } = require("../config/auth.config");
 
 async function login(req, res) {
-  const { identifier, password } = req.body;
-  // identifier = username OR email
+  const { email, password } = req.body;
 
-  if (!identifier || !password) {
+
+  if (!email || !password) {
     return res.status(400).json({ error: "Missing credentials" });
   }
 
   const user = await userModel.findOne({
     where: {
-      [require("sequelize").Op.or]: [
-        { email: identifier },
-        { username: identifier },
-      ],
+      email: email
     },
   });
 

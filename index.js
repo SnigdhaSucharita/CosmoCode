@@ -111,7 +111,6 @@ app.get("/api/search-history", requireAuthApi, getSearchHistory);
 
 /* ------------------ DB ------------------ */
 
-console.log("Before authenticate");
 
 sequelize
   .authenticate()
@@ -122,7 +121,6 @@ sequelize
     console.error("Unable to connect to database.", error);
   });
 
-console.log("After authenticate");
 
 /* ------------------ SERVER ------------------ */
 
