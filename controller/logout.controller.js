@@ -12,7 +12,7 @@ async function logout(req, res) {
   }
 
   clearAuthCookies(res);
-  return res.json({ message: "Logged out successfully" });
+  return res.set("Cache-Control", "no-store").json({ message: "Logged out successfully" });
 }
 
 module.exports = { logout };

@@ -50,7 +50,10 @@ async function refresh(req, res) {
 
   setRefreshTokenCookie(res, newRefreshToken);
 
-  return res.json({ accessToken: newAccessToken });
+  return res
+    .status(200)
+    .set("Cache-Control", "no-store")
+    .json({ accessToken: newAccessToken });
 }
 
 module.exports = { refresh };

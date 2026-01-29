@@ -31,7 +31,7 @@ async function verifyEmail(req, res) {
 
   await user.save();
 
-  return res.json({
+  return res.set("Cache-Control", "no-store").json({
     success: true,
     message: "Email verified successfully",
   });

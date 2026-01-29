@@ -53,7 +53,7 @@ async function resendVerification(req, res) {
     console.error("Email failed:", err.message);
   }
 
-  return res.json({
+  return res.set("Cache-Control", "no-store").json({
     success: true,
     message: "Verification email sent",
   });

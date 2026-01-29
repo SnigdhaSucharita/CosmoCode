@@ -88,15 +88,18 @@ async function login(req, res) {
   setRefreshTokenCookie(res, refreshToken);
   setAccessTokenCookie(res, accessToken);
 
-  return res.json({
-    success: true,
-    message: "Login successful.",
-    user: {
-      id: user.id,
-      username: user.username,
-      email: user.email,
-    },
-  });
-}
+  return res
+    .status(200)
+    .set("Cache-Control", "no-store")
+    .json({
+      success: true,
+      message: "Login successful.",
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+      },
+    });
+  }
 
 module.exports = { login };

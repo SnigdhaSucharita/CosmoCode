@@ -1,5 +1,5 @@
 const getCurrentUser = async (req, res) => {
-  res.status(200).json({
+  res.status(200).set("Cache-Control", "no-store").json({
     user: {
       id: req.user.id,
       username: req.user.username,

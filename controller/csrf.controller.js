@@ -1,5 +1,5 @@
 function getCsrfToken(req, res) {
-  return res.json({
+  return res.set("Cache-Control", "no-store").json({
     csrfToken: req.csrfToken(),
   });
 }
