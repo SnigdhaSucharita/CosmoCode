@@ -111,6 +111,8 @@ app.get("/api/search-history", requireAuthApi, getSearchHistory);
 
 /* ------------------ DB ------------------ */
 
+sconsole.log("Before authenticate");
+
 sequelize
   .authenticate()
   .then(() => {
@@ -119,6 +121,8 @@ sequelize
   .catch((error) => {
     console.error("Unable to connect to database.", error);
   });
+
+console.log("After authenticate");
 
 /* ------------------ SERVER ------------------ */
 
