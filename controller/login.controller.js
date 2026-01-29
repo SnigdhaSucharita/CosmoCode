@@ -89,6 +89,7 @@ async function login(req, res) {
   setAccessTokenCookie(res, accessToken);
 
   return res.json({
+    success: true,
     message: "Login successful.",
     user: {
       id: user.id,
