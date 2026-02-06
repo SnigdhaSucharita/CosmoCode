@@ -28,7 +28,6 @@ const { getSearchHistory } = require("./controller/searchHistory.controller");
 const { loadPhotoPage } = require("./controller/loadPhotoPage.controller");
 const { getAllSavedPhotos } = require("./controller/getCollection.controller");
 const { getCurrentUser } = require("./controller/auth.controller");
-const { getCsrfToken } = require("./controller/csrf.controller");
 const {
   googleAuth,
   googleCallback,
@@ -37,7 +36,6 @@ const {
 /* ------------------ Middleware ------------------ */
 
 const { requireAuthApi } = require("./middleware/requireAuthApi");
-const { csrfProtection } = require("./middleware/csurf.middleware");
 const { extractUser } = require("./middleware/extractUser");
 
 /* ------------------ DB ------------------ */
@@ -77,15 +75,14 @@ const signupLimiter = rateLimit({
 
 /* ------------------ AUTH ROUTES ------------------ */
 
-app.get("/api/auth/csrf", csrfProtection, getCsrfToken);
-app.post("/api/auth/signup", signupLimiter, csrfProtection, signup);
+app.post("/api/auth/signup", signupLimiter, signup);
 app.get("/api/auth/verify-email", verifyEmail);
 app.post("/api/auth/resend-verification", resendVerification);
-app.post("/api/auth/login", loginLimiter, csrfProtection, login);
-app.post("/api/auth/logout", requireAuthApi, csrfProtection, logout);
+app.post("/api/auth/login", loginLimiter, login);
+app.post("/api/auth/logout", requireAuthApi, logout);
 app.post("/api/auth/refresh", refresh);
-app.post("/api/auth/forgot-password", csrfProtection, forgotPassword);
-app.post("/api/auth/reset-password", csrfProtection, resetPassword);
+app.post("/api/auth/forgot-password", forgotPassword);
+app.post("/api/auth/reset-password", resetPassword);
 app.get("/api/auth/google", googleAuth);
 app.get("/api/auth/google/callback", googleCallback);
 app.get("/api/auth/me", requireAuthApi, getCurrentUser);
@@ -111,7 +108,6 @@ app.get("/api/search-history", requireAuthApi, getSearchHistory);
 
 /* ------------------ DB ------------------ */
 
-
 sequelize
   .authenticate()
   .then(() => {
@@ -120,7 +116,6 @@ sequelize
   .catch((error) => {
     console.error("Unable to connect to database.", error);
   });
-
 
 /* ------------------ SERVER ------------------ */
 
