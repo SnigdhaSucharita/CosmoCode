@@ -1,11 +1,15 @@
+require("dotenv").config();
 const csrf = require("csurf");
+const isProd = process.env.NODE_ENV === "production";
 
 const csrfProtection = csrf({
   cookie: {
     key: "csrf",
     httpOnly: false,
-    sameSite: "none",
-    secure: process.env.NODE_ENV === "production",
+    sameSite: isProd ? "none" : "lax",
+    secure: isProd,
+    domain: isProd ? ".onrender.com" : undefined,
+    path: "/",
   },
 });
 
