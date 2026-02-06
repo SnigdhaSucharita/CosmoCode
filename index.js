@@ -94,16 +94,11 @@ app.get("/api/photos/search", extractUser, getPhotosByQuery);
 /* ------------------ PROTECTED API ROUTES ------------------ */
 
 app.get("/api/photos", requireAuthApi, getAllSavedPhotos);
-app.post("/api/photos", requireAuthApi, csrfProtection, savePhotoToCollection);
+app.post("/api/photos", requireAuthApi, savePhotoToCollection);
 app.get("/api/photos/tag/search", requireAuthApi, searchPhotosByTag);
 app.get("/api/photos/:photoId", requireAuthApi, loadPhotoPage);
-app.post("/api/photos/:photoId/tag", requireAuthApi, csrfProtection, addTag);
-app.delete(
-  "/api/photos/:photoId/tag",
-  requireAuthApi,
-  csrfProtection,
-  deleteTag,
-);
+app.post("/api/photos/:photoId/tag", requireAuthApi, addTag);
+app.delete("/api/photos/:photoId/tag", requireAuthApi, deleteTag);
 app.get("/api/search-history", requireAuthApi, getSearchHistory);
 
 /* ------------------ DB ------------------ */
