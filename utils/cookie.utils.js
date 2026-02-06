@@ -5,7 +5,8 @@ function setRefreshTokenCookie(res, token) {
     httpOnly: true,
     secure: isProd,
     sameSite: isProd ? "none" : "lax",
-    path: "/api/auth/refresh",
+    path: "/",
+    domain: ".onrender.com",
     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
   });
 }
@@ -16,6 +17,7 @@ function setAccessTokenCookie(res, token) {
     secure: isProd,
     sameSite: isProd ? "none" : "lax",
     path: "/",
+    domain: ".onrender.com",
     maxAge: 15 * 60 * 1000, // 15 min
   });
 }
