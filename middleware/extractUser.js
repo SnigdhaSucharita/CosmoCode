@@ -1,7 +1,14 @@
-const jwt = require("jsonwebtoken");
+const { User } = require("../models");
+const { verifyAccessToken } = require("../utils/jwt.utils");
 
-function extractUser(req, res, next) {
-  const token = req.cookies?.access;
+async function extractUser(req, res, next) {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader?.startsWith("Bearer ")) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  const token = authHeader.split(" ")[1];
 
   if (!token) {
     req.user = null;
@@ -9,7 +16,11 @@ function extractUser(req, res, next) {
   }
 
   try {
-    req.user = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    const payload = verifyAccessToken(token);
+    const user = await User.findByPk(payload.userId, {
+      attributes: { exclude: ["passwordHash"] },
+    });
+    req.user = user;
   } catch (err) {
     req.user = null;
   }
@@ -18,4 +29,3 @@ function extractUser(req, res, next) {
 }
 
 module.exports = { extractUser };
-

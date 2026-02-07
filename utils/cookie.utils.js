@@ -5,30 +5,17 @@ function setRefreshTokenCookie(res, token) {
     httpOnly: true,
     secure: isProd,
     sameSite: isProd ? "none" : "lax",
-    path: "/",
+    path: "/api/auth/refresh",
     domain: ".onrender.com",
     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
   });
 }
 
-function setAccessTokenCookie(res, token) {
-  res.cookie("access", token, {
-    httpOnly: true,
-    secure: isProd,
-    sameSite: isProd ? "none" : "lax",
-    path: "/",
-    domain: ".onrender.com",
-    maxAge: 15 * 60 * 1000, // 15 min
-  });
-}
-
-function clearAuthCookies(res) {
-  res.clearCookie("jid");
-  res.clearCookie("access");
+function clearAuthCookie(res) {
+  res.clearCookie("jid", { path: "/api/auth/refresh" });
 }
 
 module.exports = {
   setRefreshTokenCookie,
-  setAccessTokenCookie,
-  clearAuthCookies,
+  clearAuthCookie,
 };

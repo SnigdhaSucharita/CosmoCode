@@ -1,14 +1,17 @@
-const jwt = require("jsonwebtoken");
 const { User } = require("../models");
+const { verifyAccessToken } = require("../utils/jwt.utils");
 
 async function requireAuthApi(req, res, next) {
-  try {
-    const token = req.cookies?.access;
-    if (!token) {
-      return res.status(401).json({ message: "Not authenticated" });
-    }
+  const authHeader = req.headers.authorization;
 
-    const payload = jwt.verify(token, process.env.JWT_SECRET);
+  if (!authHeader?.startsWith("Bearer ")) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  try {
+    const payload = verifyAccessToken(token);
 
     const user = await User.findByPk(payload.userId, {
       attributes: { exclude: ["passwordHash"] },

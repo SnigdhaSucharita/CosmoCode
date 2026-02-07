@@ -1,13 +1,23 @@
 const { Session: sessionModel, User: userModel } = require("../models");
-const { signAccessToken, signRefreshToken } = require("../utils/jwt.utils");
+const {
+  signAccessToken,
+  signRefreshToken,
+  verifyRefreshToken,
+} = require("../utils/jwt.utils");
 const { setRefreshTokenCookie } = require("../utils/cookie.utils");
 const { hashToken } = require("../utils/token.utils");
 
 async function refresh(req, res) {
   const token = req.cookies?.jid;
-
   if (!token) {
     return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  let payload;
+  try {
+    payload = verifyRefreshToken(token);
+  } catch (err) {
+    return res.status(401).json({ error: "Invalid refresh token" });
   }
 
   const tokenHash = hashToken(token);
@@ -20,10 +30,9 @@ async function refresh(req, res) {
     return res.status(401).json({ error: "Session expired" });
   }
 
-  const user = await userModel.findByPk(session.userId);
-
-  if (!user) {
-    return res.status(401).json({ error: "Unauthorized" });
+  const user = await userModel.findByPk(payload.userId);
+  if (!user || user.tokenVersion !== payload.tokenVersion) {
+    return res.status(401).json({ error: "Invalid refresh token" });
   }
 
   // Rotate session
@@ -50,10 +59,7 @@ async function refresh(req, res) {
 
   setRefreshTokenCookie(res, newRefreshToken);
 
-  return res
-    .status(200)
-    .set("Cache-Control", "no-store")
-    .json({ accessToken: newAccessToken });
+  return res.status(200).json({ accessToken: newAccessToken });
 }
 
 module.exports = { refresh };

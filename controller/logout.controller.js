@@ -1,5 +1,5 @@
 const { Session: sessionModel } = require("../models");
-const { clearAuthCookies } = require("../utils/cookie.utils");
+const { clearAuthCookie } = require("../utils/cookie.utils");
 const { hashToken } = require("../utils/token.utils");
 
 async function logout(req, res) {
@@ -11,8 +11,8 @@ async function logout(req, res) {
     });
   }
 
-  clearAuthCookies(res);
-  return res.set("Cache-Control", "no-store").json({ message: "Logged out successfully" });
+  clearAuthCookie(res);
+  return res.json({ message: "Logged out successfully" });
 }
 
 module.exports = { logout };
