@@ -1,5 +1,6 @@
 require("dotenv").config();
 const isProd = process.env.NODE_ENV === "production";
+
 function setRefreshTokenCookie(res, token) {
   res.cookie("jid", token, {
     httpOnly: true,
@@ -10,11 +11,23 @@ function setRefreshTokenCookie(res, token) {
   });
 }
 
-function clearAuthCookie(res) {
+function setAccessTokenCookie(res, token) {
+  res.cookie("access", token, {
+    httpOnly: true,
+    secure: isProd,
+    sameSite: isProd ? "none" : "lax",
+    path: "/",
+    maxAge: 15 * 60 * 1000, // 15 mins
+  });
+}
+
+function clearAuthCookies(res) {
   res.clearCookie("jid", { path: "/api/auth/refresh" });
+  res.clearCookie("access");
 }
 
 module.exports = {
   setRefreshTokenCookie,
-  clearAuthCookie,
+  setAccessTokenCookie,
+  clearAuthCookies,
 };

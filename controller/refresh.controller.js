@@ -4,7 +4,10 @@ const {
   signRefreshToken,
   verifyRefreshToken,
 } = require("../utils/jwt.utils");
-const { setRefreshTokenCookie } = require("../utils/cookie.utils");
+const {
+  setRefreshTokenCookie,
+  setAccessTokenCookie,
+} = require("../utils/cookie.utils");
 const { hashToken } = require("../utils/token.utils");
 
 async function refresh(req, res) {
@@ -58,6 +61,7 @@ async function refresh(req, res) {
   });
 
   setRefreshTokenCookie(res, newRefreshToken);
+  setAccessTokenCookie(res, newAccessToken);
 
   return res.status(200).json({ accessToken: newAccessToken });
 }

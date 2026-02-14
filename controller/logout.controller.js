@@ -1,5 +1,5 @@
 const { Session: sessionModel } = require("../models");
-const { clearAuthCookie } = require("../utils/cookie.utils");
+const { clearAuthCookies } = require("../utils/cookie.utils");
 const { hashToken } = require("../utils/token.utils");
 
 async function logout(req, res) {
@@ -11,7 +11,7 @@ async function logout(req, res) {
     });
   }
 
-  clearAuthCookie(res);
+  clearAuthCookies(res);
   return res.json({ message: "Logged out successfully" });
 }
 

@@ -1,7 +1,10 @@
 const { User: userModel, Session: sessionModel } = require("../models");
 const { comparePassword } = require("../utils/password.utils");
 const { signAccessToken, signRefreshToken } = require("../utils/jwt.utils");
-const { setRefreshTokenCookie } = require("../utils/cookie.utils");
+const {
+  setRefreshTokenCookie,
+  setAccessTokenCookie,
+} = require("../utils/cookie.utils");
 const { hashToken } = require("../utils/token.utils");
 const {
   MAX_LOGIN_ATTEMPTS,
@@ -82,6 +85,7 @@ async function login(req, res) {
   });
 
   setRefreshTokenCookie(res, refreshToken);
+  setAccessTokenCookie(res, accessToken);
 
   return res.status(200).json({
     accessToken,
